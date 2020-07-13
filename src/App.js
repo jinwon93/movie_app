@@ -1,40 +1,37 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
-function Food ({name,picture}){
-  return <div>
-          <h2>I Like {name}</h2>
-          <img src={picture} />
-        </div>
-}
-const foodLike = [
-  {
-    id:1,
-    name:"sky",
-    image:"https://i.pinimg.com/originals/15/92/bc/1592bc16af84ca4e1888476132ea49a0.png"
-  },
-  {
-    id:2,
-    name:"mon",
-    image:"https://post-phinf.pstatic.net/MjAxNzEyMjBfMTAy/MDAxNTEzNzUxODY3NDg3.yhuQ6AD6EM3Er4MvNmqbJ8GFGbJTO07kWpI7FpBjwwkg.4-YFyjnge1WkeQf_F6rKBw7wXoIiGQxamB0oxKjaDuMg.PNG/20171220_1537051.png?type=w1200"
-  },
-  {
-    id:3,
-    name:"orora",
-    image:"https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile23.uf.tistory.com%2Fimage%2F997A04495A60BAAC14EE36"
+class App extends React.Component{
+  // constructor(){
+    // 
+  // }
+  state = {
+    count: 0
+  };
+  // state를 set할때 react 외부의 상태에 의존하지 않는 가장 좋은방법
+  // setState 안에 state를 사용하는것보다 current 함수로 사용
+  // this.setState({count:this.state.count - 1}); X
+  // ※setState를 호출할 때 마다 react는 새로운 state와 함께 render function을 호출
+  add = () => {
+    this.setState(current =>({count:current.count + 1}));
+  };
+  minus = () => {
+    this.setState(current =>({count:current.count - 1}));
+  };
+  componentDidMount(){
+    console.log("componentDidMount");
   }
-];
-
-// component --> HTML을 반환하는 함수
-function App() {
-  return (
-        <div>
-          {/* pros */}
-          {foodLike.map(dish =>(
-            <Food key={dish.id} name ={dish.name} picture={dish.image} />
-          ))}
-        </div>
-        
-  );
+  componentDidUpdate(){
+    console.log("update");
+  }
+  render() {
+    console.log("render");
+    return <div>
+              <h1>The number is: {this.state.count}</h1>
+              <button onClick={this.add}>Add</button>
+              <button onClick={this.minus}>Minus</button>
+           </div>
+  }
 }
 
 export default App;
