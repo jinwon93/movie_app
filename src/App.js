@@ -1,37 +1,49 @@
 import React from 'react';
-import PropTypes from "prop-types";
+import axios from 'axios';
+import Movie from './Movie';
+import "./App.css";
+
 
 class App extends React.Component{
-  // constructor(){
-    // 
-  // }
   state = {
-    count: 0
+    isLoading :true,
+    movies: []
   };
-  // state를 set할때 react 외부의 상태에 의존하지 않는 가장 좋은방법
-  // setState 안에 state를 사용하는것보다 current 함수로 사용
-  // this.setState({count:this.state.count - 1}); X
-  // ※setState를 호출할 때 마다 react는 새로운 state와 함께 render function을 호출
-  add = () => {
-    this.setState(current =>({count:current.count + 1}));
-  };
-  minus = () => {
-    this.setState(current =>({count:current.count - 1}));
-  };
-  componentDidMount(){
-    console.log("componentDidMount");
+  getMovies = async () => {
+    const {
+          data:{
+            data:{movies}
+          }
+    } = await axios.get("https://yts-proxy.now.sh/list_movies.json?sort_by=rating");
+    this.setState({movies,isLoading:false})
   }
-  componentDidUpdate(){
-    console.log("update");
+  componentDidMount(){
+    this.getMovies();
   }
   render() {
-    console.log("render");
-    return <div>
-              <h1>The number is: {this.state.count}</h1>
-              <button onClick={this.add}>Add</button>
-              <button onClick={this.minus}>Minus</button>
-           </div>
-  }
+  const { isLoading, movies } = this.state;  
+    return( 
+    <section class="container">
+    {isLoading ? ( 
+      <div class="loader">
+        <span class="loader__text">Loading....</span>
+      </div>
+    ) : (
+        <div class="movies">
+            {movies.map(movie => (
+                <Movie
+                     key={movie.id} 
+                     id={movie.id}  
+                     year={movie.year} 
+                     title={movie.title} 
+                     summary={movie.summary} 
+                     poster={movie.medium_cover_image} 
+                 />
+              ))}
+        </div>
+        )}
+    </section>
+  );
+ } 
 }
-
 export default App;
