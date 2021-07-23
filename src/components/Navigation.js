@@ -6,7 +6,7 @@ import "./Navigation.css";
 function Navigation (){
     return (
         <div className="nav">
-            <Link to="/">Home jinhome</Link>
+            <Link to="/">Home jinhomesss</Link>
             <Link to="/about">About</Link>
         </div>
     );    
